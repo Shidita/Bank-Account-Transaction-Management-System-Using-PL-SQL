@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 700" width="1180" height="700" font-family="Arial, Helvetica, sans-serif">
+  <rect width="1180" height="700" fill="#ffffff"/>
+  <text x="40" y="40" font-size="22" font-weight="bold" fill="#13222f">Bank Account &amp; Transaction Management: ER diagram</text>
+  <text x="40" y="62" font-size="13" fill="#56677a">PK = primary key, FK = foreign key. Lines show one-to-many (1 : N).</text>
+
+  <defs>
+    <style>
+      .t{fill:#f6f9fc;stroke:#0e6a73;stroke-width:2}
+      .hd{fill:#0e6a73}
+      .h{font-size:16px;font-weight:bold;fill:#fff}
+      .c{font-size:14px;fill:#13222f}
+      .k{font-size:14px;font-weight:bold;fill:#0e6a73}
+      .l{stroke:#13222f;stroke-width:2;fill:none}
+      .n{font-size:13px;fill:#13222f;font-weight:bold}
+      .d{stroke:#56677a;stroke-width:1.5;stroke-dasharray:6 5;fill:none}
+    </style>
+  </defs>
+
+  <!-- CUSTOMERS -->
+  <rect class="t" x="40" y="100" width="260" height="210" rx="8"/>
+  <path class="hd" d="M40 108a8 8 0 0 1 8-8h244a8 8 0 0 1 8 8v22H40z"/>
+  <text class="h" x="56" y="121">CUSTOMERS</text>
+  <text class="k" x="56" y="154">PK</text><text class="c" x="86" y="154">customer_id</text>
+  <text class="c" x="86" y="180">full_name</text>
+  <text class="c" x="86" y="206">email (unique, format check)</text>
+  <text class="c" x="86" y="232">phone</text>
+  <text class="c" x="86" y="258">city</text>
+  <text class="c" x="86" y="284">created_at</text>
+
+  <!-- ACCOUNTS -->
+  <rect class="t" x="440" y="100" width="270" height="210" rx="8"/>
+  <path class="hd" d="M440 108a8 8 0 0 1 8-8h254a8 8 0 0 1 8 8v22H440z"/>
+  <text class="h" x="456" y="121">ACCOUNTS</text>
+  <text class="k" x="456" y="154">PK</text><text class="c" x="486" y="154">account_id</text>
+  <text class="k" x="456" y="180">FK</text><text class="c" x="486" y="180">customer_id</text>
+  <text class="c" x="486" y="206">account_type</text>
+  <text class="c" x="486" y="232">balance (>= 0)</text>
+  <text class="c" x="486" y="258">status</text>
+  <text class="c" x="486" y="284">opened_at</text>
+
+  <!-- BANK_TRANSACTIONS -->
+  <rect class="t" x="850" y="100" width="290" height="236" rx="8"/>
+  <path class="hd" d="M850 108a8 8 0 0 1 8-8h274a8 8 0 0 1 8 8v22H850z"/>
+  <text class="h" x="866" y="121">BANK_TRANSACTIONS</text>
+  <text class="k" x="866" y="154">PK</text><text class="c" x="896" y="154">transaction_id</text>
+  <text class="k" x="866" y="180">FK</text><text class="c" x="896" y="180">account_id</text>
+  <text class="c" x="896" y="206">transaction_type</text>
+  <text class="c" x="896" y="232">amount (> 0)</text>
+  <text class="c" x="896" y="258">transaction_date</text>
+  <text class="c" x="896" y="284">description</text>
+  <text class="k" x="866" y="310">FK</text><text class="c" x="896" y="310">related_account_id</text>
+
+  <!-- LOANS -->
+  <rect class="t" x="40" y="430" width="260" height="210" rx="8"/>
+  <path class="hd" d="M40 438a8 8 0 0 1 8-8h244a8 8 0 0 1 8 8v22H40z"/>
+  <text class="h" x="56" y="451">LOANS (future module)</text>
+  <text class="k" x="56" y="484">PK</text><text class="c" x="86" y="484">loan_id</text>
+  <text class="k" x="56" y="510">FK</text><text class="c" x="86" y="510">customer_id</text>
+  <text class="c" x="86" y="536">principal, interest_rate</text>
+  <text class="c" x="86" y="562">tenure_months</text>
+  <text class="c" x="86" y="588">outstanding</text>
+  <text class="c" x="86" y="614">status</text>
+
+  <!-- AUDIT_LOG -->
+  <rect class="t" x="440" y="430" width="270" height="210" rx="8"/>
+  <path class="hd" d="M440 438a8 8 0 0 1 8-8h254a8 8 0 0 1 8 8v22H440z"/>
+  <text class="h" x="456" y="451">AUDIT_LOG</text>
+  <text class="k" x="456" y="484">PK</text><text class="c" x="486" y="484">audit_id</text>
+  <text class="c" x="486" y="510">account_id (no FK, kept forever)</text>
+  <text class="c" x="486" y="536">action_type</text>
+  <text class="c" x="486" y="562">old_balance, new_balance</text>
+  <text class="c" x="486" y="588">action_time</text>
+  <text class="c" x="486" y="614">details</text>
+
+  <!-- relationships -->
+  <path class="l" d="M300 180H440"/><text class="n" x="312" y="172">1</text><text class="n" x="418" y="172">N</text>
+  <path class="l" d="M710 180H850"/><text class="n" x="722" y="172">1</text><text class="n" x="828" y="172">N</text>
+  <path class="l" d="M170 310V430"/><text class="n" x="178" y="334">1</text><text class="n" x="178" y="422">N</text>
+  <!-- related account (self reference through transactions) -->
+  <path class="l" d="M995 336V372H650 V310"/>
+  <text class="n" x="1003" y="358">N</text><text class="n" x="658" y="330">1</text>
+  <text class="c" x="700" y="392" font-size="12" fill="#56677a">related_account_id (other side of a transfer)</text>
+  <!-- trigger -->
+  <path class="d" d="M575 310V430"/>
+  <text class="c" x="590" y="420" font-size="12" fill="#56677a">trg_account_audit writes a row on every balance change</text>
+</svg>

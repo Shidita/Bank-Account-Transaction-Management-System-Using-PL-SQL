@@ -1,126 +1,37 @@
-# Bank Account & Transaction Management System Using PL/SQL
+# Bank Account & Transaction Management System using PL/SQL – web frontend
 
-A web-based banking application developed using **Python, Flask, Oracle PL/SQL, HTML, CSS, and JavaScript**. It provides banking operations through an interactive frontend connected to a database backend.
+Yeh app aapke Oracle `bank_pkg` package ke upar chalta hai. Har button seedha aapki procedure call karta hai
+(`deposit`, `withdraw`, `transfer`, `create_customer`, `create_account`, `change_account_status`,
+`get_balance`, `calculate_interest`) aur screen ke right side wale **PL/SQL console** me call, DBMS_OUTPUT
+aur `ORA-200xx` error dikhata hai – viva/demo ke liye perfect.
 
-## Features
+## Screens
+Overview · Customers · Accounts · Move money (+ error-case buttons) · Transactions / statement · Reports
+(balance vs transactions, interest calculator) · Audit log (trigger ka output)
 
-- **Customer Management:** Create and manage customer records.
-- **Account Management:** Create accounts and change account status.
-- **Deposit & Withdrawal:** Perform banking transactions.
-- **Fund Transfer:** Transfer money between accounts.
-- **Balance Inquiry:** Check account balances.
-- **Transaction History:** View transactions and account statements.
-- **Interest Calculator:** Calculate account interest.
-- **Audit Logging:** Track database operations using triggers.
-- **PL/SQL Console:** View procedure calls, database output, and errors.
-- **Demo Mode:** Run the application without an Oracle database using SQLite.
+## Option A – Oracle ke saath (asli use)
+1. Pehle apne schema me SQL scripts chala lo (`sql/00_run_all.sql` ya 01–05). Package + tables + views zaroori hain.
+2. `pip install -r requirements.txt`  (python-oracledb "thin" mode use karta hai – Oracle Client install nahi chahiye)
+3. `.env.example` ko copy karke `.env` banao aur apna login bharo:
+   ```
+   ORACLE_USER=system
+   ORACLE_PASSWORD=...
+   ORACLE_DSN=localhost:1521/XE        # XE 18c/21c ke liye: localhost:1521/XEPDB1
+   ```
+4. `python app.py` → browser me http://localhost:5000
 
-## Technologies Used
+Note: transactions/audit list me `FETCH FIRST n ROWS ONLY` use hua hai, isliye Oracle **12c ya upar** chahiye
+(11g XE me yeh query badalni padegi – bata dena).
 
-- **Frontend:** HTML, CSS, JavaScript
-- **Backend:** Python, Flask
-- **Database:** Oracle Database, PL/SQL
-- **Oracle Connectivity:** python-oracledb
-- **Demo Database:** SQLite
+## Option B – Demo mode (Oracle ke bina)
+`.env` bina banaye `python app.py` chalao. Ek SQLite copy chalti hai jisme same rules aur same ORA-200xx codes hain.
+Sidebar me "Reset demo data" se data wapas original ho jata hai.
 
-## Project Structure
-
-```text
-Bank_Account_Transaction_Management_System/
-├── app.py
-├── common.py
-├── oracle_backend.py
-├── demo_backend.py
-├── requirements.txt
-├── .env.example
-├── static/
-│   ├── index.html
-│   ├── style.css
-│   └── app.js
-├── sql/
-│   ├── 00_run_all.sql
-│   ├── 01_create_tables.sql
-│   ├── 02_sample_data.sql
-│   ├── 03_package.sql
-│   ├── 04_triggers.sql
-│   ├── 05_views_reports.sql
-│   ├── 06_demo_execution.sql
-│   └── 07_reset.sql
-└── report/
-    ├── ER_Diagram.svg
-    ├── Project_Report.md
-    └── Viva_Questions.md
+## Files
 ```
-
-## Installation and Setup
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
-cd YOUR-REPOSITORY
+app.py              Flask routes (JSON API)
+oracle_backend.py   bank_pkg ko call karta hai (python-oracledb)
+demo_backend.py     Oracle ke bina chalne wala SQLite version
+static/             index.html, style.css, app.js  (frontend)
+sql/ report/        aapka original project (unchanged)
 ```
-
-Replace `YOUR-USERNAME` and `YOUR-REPOSITORY` with your actual GitHub details.
-
-### 2. Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 3. Run in Demo Mode
-
-To run the application without Oracle Database configuration:
-
-```bash
-python app.py
-```
-
-Open your browser and visit:
-
-`http://localhost:5000`
-
-### 4. Run with Oracle Database
-
-1. Install and start Oracle Database.
-2. Execute the SQL scripts in the `sql/` directory in the required order, or use `sql/00_run_all.sql` in SQL*Plus.
-3. Create a `.env` file based on `.env.example`.
-4. Configure your Oracle database credentials:
-
-```env
-ORACLE_USER=your_username
-ORACLE_PASSWORD=your_password
-ORACLE_DSN=localhost:1521/XEPDB1
-```
-
-Use the correct service name and credentials for your Oracle installation.
-
-5. Start the application:
-
-```bash
-python app.py
-```
-
-**Important:** Never upload your actual `.env` file or database passwords to GitHub.
-
-## Database Concepts Demonstrated
-
-- PL/SQL packages and stored procedures
-- Database tables and relationships
-- Triggers and audit logs
-- Views and reporting queries
-- Transaction processing
-- Error handling and validation
-
-## Project Purpose
-
-This project demonstrates the integration of a web-based frontend with Python backend logic and Oracle PL/SQL database operations. It is designed for academic learning, database management practice, and banking transaction demonstrations.
-
-## Author
-
-**Shidita Tiwari**
-
-## License
-
-No license has been specified yet.
